@@ -1,0 +1,109 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - pollpulse-network
+
+  user-service:
+    build:
+      context: .
+      dockerfile: deployments/docker/user-service/Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=pollpulse_users
+      - JWT_SECRET=dev_secret_key
+    depends_on:
+      - postgres
+    networks:
+      - pollpulse-network
+
+  survey-service:
+    build:
+      context: .
+      dockerfile: deployments/docker/survey-service/Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=pollpulse_surveys
+      - USER_SERVICE_URL=http://user-service:8081
+    depends_on:
+      - postgres
+      - user-service
+    networks:
+      - pollpulse-network
+
+  result-service:
+    build:
+      context: .
+      dockerfile: deployments/docker/result-service/Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=pollpulse_results
+      - SURVEY_SERVICE_URL=http://survey-service:8082
+      - USER_SERVICE_URL=http://user-service:8081
+    depends_on:
+      - postgres
+      - survey-service
+      - user-service
+    networks:
+      - pollpulse-network
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: deployments/docker/api-gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - USER_SERVICE_URL=http://user-service:8081
+      - SURVEY_SERVICE_URL=http://survey-service:8082
+      - RESULT_SERVICE_URL=http://result-service:8083
+    depends_on:
+      - user-service
+      - survey-service
+      - result-service
+    networks:
+      - pollpulse-network
+
+  postgres:
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_MULTIPLE_DATABASES=pollpulse_users,pollpulse_surveys,pollpulse_results
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/init-multiple-db.sh:/docker-entrypoint-initdb.d/init-multiple-db.sh
+    ports:
+      - "5432:5432"
+    networks:
+      - pollpulse-network
+
+networks:
+  pollpulse-network:
+    driver: bridge
+
+volumes:
+  postgres-data: 
