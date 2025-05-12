@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/VitaliySynytskyi/pollpulse/services/survey-service/models"
+	"github.com/VitaliySynytskyi/pollpulse/services/survey-service/repository"
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
-	"github.com/vital/pollpulse/services/survey-service/models"
-	"github.com/vital/pollpulse/services/survey-service/repository"
 )
 
 type SurveyHandler struct {

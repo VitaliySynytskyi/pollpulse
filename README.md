@@ -22,7 +22,7 @@ The platform consists of the following microservices:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/pollpulse.git
+   git clone https://github.com/VitaliySynytskyi/pollpulse.git
    cd pollpulse
    ```
 

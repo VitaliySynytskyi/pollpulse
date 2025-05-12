@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"database/sql"
 	"log"
 	"net/http"
 	"os"
@@ -13,6 +12,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"go.uber.org/zap"
 
@@ -35,8 +35,8 @@ func main() {
 		dbConnStr = "postgres://postgres:postgres@postgres:5432/pollpulse?sslmode=disable"
 	}
 
-	// Connect to database
-	db, err := sql.Open("postgres", dbConnStr)
+	// Connect to database using sqlx
+	db, err := sqlx.Connect("postgres", dbConnStr)
 	if err != nil {
 		logger.Fatal("Failed to connect to database", zap.Error(err))
 	}

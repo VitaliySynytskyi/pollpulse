@@ -6,13 +6,13 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/VitaliySynytskyi/pollpulse/pkg/common/errors"
+	"github.com/VitaliySynytskyi/pollpulse/pkg/common/logging"
+	"github.com/VitaliySynytskyi/pollpulse/pkg/common/middleware"
+	"github.com/VitaliySynytskyi/pollpulse/services/user-service/models"
+	"github.com/VitaliySynytskyi/pollpulse/services/user-service/repository"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
-	"github.com/pollpulse/pkg/common/errors"
-	"github.com/pollpulse/pkg/common/logging"
-	"github.com/pollpulse/pkg/common/middleware"
-	"github.com/pollpulse/services/user-service/models"
-	"github.com/pollpulse/services/user-service/repository"
 )
 
 // UserHandler handles HTTP requests for users

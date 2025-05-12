@@ -9,14 +9,14 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/VitaliySynytskyi/pollpulse/pkg/common/config"
+	"github.com/VitaliySynytskyi/pollpulse/pkg/common/database"
+	"github.com/VitaliySynytskyi/pollpulse/pkg/common/logging"
+	"github.com/VitaliySynytskyi/pollpulse/services/user-service/handler"
+	"github.com/VitaliySynytskyi/pollpulse/services/user-service/repository"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"github.com/pollpulse/pkg/common/config"
-	"github.com/pollpulse/pkg/common/database"
-	"github.com/pollpulse/pkg/common/logging"
-	"github.com/pollpulse/services/user-service/handler"
-	"github.com/pollpulse/services/user-service/repository"
 )
 
 func main() {

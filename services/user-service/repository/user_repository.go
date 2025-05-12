@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/VitaliySynytskyi/pollpulse/services/user-service/models"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
-	"github.com/pollpulse/services/user-service/models"
 )
 
 // UserRepository handles database operations for users
@@ -369,4 +369,4 @@ func (r *UserRepository) GetRoles(ctx context.Context) ([]*models.Role, error) {
 	}
 
 	return roles, nil
-} 
+}
